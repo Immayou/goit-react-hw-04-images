@@ -1,37 +1,30 @@
-import React, { Component } from "react";
+import { useState } from "react";
 import PropTypes from 'prop-types';
 import Notiflix from "notiflix";
 import { HeaderForm, SearchForm, SearchFormButton, SearchFormInput } from "../Searchbar/Searchbar.styled";
 import {TiEject} from 'react-icons/ti';
-export class Searchbar extends Component {
 
-    static propTypes = {
-      isSubmitting: PropTypes.bool.isRequired
+export const Searchbar = ({onSubmit, isSubmitting}) => {
+
+  const [searchInput, setSearchInput] = useState('')
+
+  const inputHandler = e => {
+    setSearchInput (e.currentTarget.value.toLowerCase())
     }
 
-    state = {
-        searchInput: '',
-    }
-
-    inputHandler = e => {
-        this.setState ({searchInput: e.currentTarget.value.toLowerCase()})
-    }
-
-    formSubmitHandler = e => {
-    const {searchInput} = this.state
+  const formSubmitHandler = e => {
     e.preventDefault();
     if (searchInput.trim() === '') {
       Notiflix.Notify.info("Enter your query, please!")
       return
     }
-    this.props.onSubmit(searchInput)
+    onSubmit(searchInput)
     }
     
-    render () {
-        return (
+  return (
     <HeaderForm>
-    <SearchForm onSubmit={this.formSubmitHandler}>
-      <SearchFormButton type="submit" disabled={this.props.isSubmitting}>
+    <SearchForm onSubmit={formSubmitHandler}>
+      <SearchFormButton type="submit" disabled={isSubmitting}>
           <TiEject size = '25px'/>
       </SearchFormButton>
       <SearchFormInput
@@ -39,11 +32,15 @@ export class Searchbar extends Component {
         autoComplete="off"
         autoFocus
         placeholder="Search images and photos"
-        onChange={this.inputHandler}
-        value={this.state.searchInput}
+        onChange={inputHandler}
+        value={searchInput}
       />
     </SearchForm>
   </HeaderForm>
  )
 }
+
+
+Searchbar.propTypes = {
+  isSubmitting: PropTypes.bool.isRequired
 }

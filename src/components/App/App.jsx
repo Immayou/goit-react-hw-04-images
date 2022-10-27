@@ -8,6 +8,7 @@ import {Modal} from '../Modal/Modal';
 import {Button} from '../Button/Button';
 import {Wrapper} from "../App/App.styled";
 import {SpinnerLoader} from "../Loader/Loader";
+
 export class App extends Component {
 
   state = {
@@ -97,7 +98,7 @@ export class App extends Component {
                   <ImageGallery>
                     <ImageGalleryItem getPictures={apiDataPictures} onImageClick={this.onImageHandler}/>
                     </ImageGallery>)}
-                    {isLoadMoreBtn && <Button loadMore={this.onLoadMoreHandler}/>}
+                    {isLoadMoreBtn && <Button loadMore={this.onLoadMoreHandler} isActive={isLoading}/>}
                     {largeImageSrc && <Modal onModalClose={this.onModalCloseHandler}>
                       <img src={largeImageSrc} alt="large_image" />
                       </Modal>}

@@ -1,18 +1,18 @@
-import React, {Component} from "react";
+import React from "react";
 import PropTypes from 'prop-types'; 
 import { LoadMoreBtn } from "../Button/Button.styled";
-export class Button extends Component {
-    static propTypes = {
-        loadMore: PropTypes.func.isRequired,
-      }
-   
-    onLoadMoreHandler = e => {
-        e.preventDefault();
-        this.props.loadMore();}
 
-    render () {
+export const Button = ({isActive, loadMore}) => {
+    const onLoadMoreHandler = e => {
+        e.preventDefault();
+        loadMore()
+    }
+
     return (
-        <LoadMoreBtn onClick={this.onLoadMoreHandler}>Load More</LoadMoreBtn>
+        <LoadMoreBtn onClick={onLoadMoreHandler} disabled={isActive}>Load More</LoadMoreBtn>
  )
 }
-}
+
+Button.propTypes = {
+    loadMore: PropTypes.func.isRequired,
+  }
