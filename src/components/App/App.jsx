@@ -57,6 +57,7 @@ export const App = () => {
         showErrorMessage()
       }
     }
+    
     onRequestHandler()
   }, [searchValue, page])
 
