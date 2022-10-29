@@ -35,7 +35,7 @@ export const App = () => {
       try {
         setIsLoading(true)
         const dataResult = await makeApiRequest(searchValue, page)
-        const dataHits = await dataResult.hits
+        const dataHits = await dataResult.hits.map(({id, webformatURL, largeImageURL}) => {return {id, webformatURL, largeImageURL}})
         const dataTotalHits = await dataResult.totalHits
         setIsLoading(false)
         setTotalAmount(dataTotalHits)
@@ -45,14 +45,8 @@ export const App = () => {
           return
         }
   
-        if (page > 1) {
-          setApiDataPictures(prevState => ([...prevState, ...dataHits]))
-        }
-  
-        if (page === 1) {
-          setApiDataPictures(dataHits)
-        }
-  
+        setApiDataPictures(prevState => ([...prevState, ...dataHits]))
+
       } catch (error) {
         showErrorMessage()
       }
@@ -61,6 +55,10 @@ export const App = () => {
     onRequestHandler()
   }, [searchValue, page])
 
+   const onLoadMoreHandler = () => {
+    setPage(prevState => (prevState + 1))
+  } 
+  
   const onFormSubmitHandler = value => {
     setSearchValue(value)
     setPage(1)
@@ -91,7 +89,7 @@ export const App = () => {
                   <ImageGallery>
                     <ImageGalleryItem getPictures={apiDataPictures} onImageClick={onImageHandler}/>
                     </ImageGallery>)}
-                    {isLoadMoreBtn && <Button loadMore={() => {setPage(prevState => (prevState + 1))}} isActive={isLoading}/>}
+                    {isLoadMoreBtn && <Button loadMore={onLoadMoreHandler} isActive={isLoading}/>}
                     {largeImageSrc && <Modal onModalClose={() => {setLargeImageSrc('')}}>
                       <img src={largeImageSrc} alt="large_image" />
                       </Modal>}
